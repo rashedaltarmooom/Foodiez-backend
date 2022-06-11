@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
-const User = require("../../db/models/users");
+const User = require("../../db/models/Users");
 const jwt = require("jsonwebtoken");
+const { jwtExp, jwtSecret } = require("../../key");
 
 exports.signup = async (req, res) => {
   try {
@@ -10,12 +11,11 @@ exports.signup = async (req, res) => {
     const payload = {
       _id: newUser._id,
       username: newUser.username,
-      urls: newUser.urls,
-      expires: Date.now() + keys.JWT_EXPIRATION_MS,
+      exp: Date.now() + jwtExp,
     };
-    const token = jwt.sign(payload, keys.JWT_SECRET);
-    res.status(201).json(token);
+    const token = jwt.sign(payload, jwtSecret);
+    res.status(201).json({ token });
   } catch (err) {
-    res.status(500).json("Server Error");
+    res.status(500).json(err.message);
   }
 };
