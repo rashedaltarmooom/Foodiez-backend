@@ -8,3 +8,11 @@ exports.categoriesList = async (req, res, next) => {
     next(error);
   }
 };
+exports.categoryCreate = async (req, res, next) => {
+  try {
+    const newCategory = await Category.create(req.body);
+    res.status(201).json(newCategory);
+  } catch (error) {
+    next(error);
+  }
+};
