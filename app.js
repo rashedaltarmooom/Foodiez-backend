@@ -3,6 +3,8 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const morgan = require("morgan");
+const passport = require("passport");
+const { localStrategy } = require("./middleware/passport");
 const errorHandling = require("./middleware/errorHandling");
 const pathNotFound = require("./middleware/pathNotFound");
 
@@ -19,8 +21,9 @@ const port = 5001;
 app.use(cors());
 app.use(morgan(":method :url :status ")); //logger middleware
 app.use(express.json());
+app.use(passport.initialize());
+passport.use(localStrategy);
 app.use("/media", express.static(path.join(__dirname, "media")));
-
 
 //routes
 app.use("/api/users", UserRoutes);

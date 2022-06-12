@@ -19,3 +19,17 @@ exports.signup = async (req, res) => {
     res.status(500).json(err.message);
   }
 };
+
+exports.signin = async (req, res, next) => {
+  try {
+    const payload = {
+      _id: req.user._id,
+      username: req.user.username,
+      exp: Date.now() + jwtExp,
+    };
+    const token = jwt.sign(payload, jwtSecret);
+    res.status(201).json(token);
+  } catch (err) {
+    next(err);
+  }
+};
