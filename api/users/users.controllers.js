@@ -22,7 +22,12 @@ exports.signup = async (req, res) => {
 
 exports.signin = async (req, res, next) => {
   try {
-    const token = generateToken(req.user);
+    const payload = {
+      _id: req.user._id,
+      username: req.user.username,
+      exp: Date.now() + jwtExp,
+    };
+    const token = jwt.sign(payload, jwtSecret);
     res.status(201).json(token);
   } catch (err) {
     next(err);

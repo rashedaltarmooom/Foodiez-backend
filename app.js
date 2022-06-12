@@ -3,6 +3,8 @@ const express = require("express");
 const cors = require("cors");
 const UserRoutes = require("./api/users/users.routes");
 const morgan = require("morgan");
+const passport = require("passport");
+const { localStrategy } = require("./middleware/passport");
 
 //db
 const connectDB = require("./db/database");
@@ -15,6 +17,8 @@ const port = 5001;
 app.use(cors());
 app.use(morgan(":method :url :status ")); //logger middleware
 app.use(express.json());
+app.use(passport.initialize());
+passport.use(localStrategy);
 
 //routes
 app.use("/api/users", UserRoutes);
