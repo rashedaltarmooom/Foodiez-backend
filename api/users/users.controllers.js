@@ -19,3 +19,12 @@ exports.signup = async (req, res) => {
     res.status(500).json(err.message);
   }
 };
+
+exports.signin = async (req, res, next) => {
+  try {
+    const token = generateToken(req.user);
+    res.status(201).json(token);
+  } catch (err) {
+    next(err);
+  }
+};
